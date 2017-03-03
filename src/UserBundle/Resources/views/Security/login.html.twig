@@ -1,0 +1,33 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% block fos_user_content %}
+
+    <div class="three column centered row">
+        <div class="column">
+            {% if error %}
+                <div class="ui error message column">{{ error|trans({}, 'FOSUserBundle') }}</div>
+            {% endif %}
+
+            <form class="ui form" action="{{ path("fos_user_security_check") }}" method="post">
+                <div class="ui stacked segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" id="password" name="_password" required="required" />
+                        </div>
+                    </div>
+                    <input class="ui fluid large teal submit button" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                <input type="hidden" id="remember_me" name="_remember_me" value="off" />
+            </form>
+        </div>
+    </div>
+{% endblock fos_user_content %}
