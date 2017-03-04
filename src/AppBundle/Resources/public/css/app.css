@@ -1,3 +1,13 @@
+body {
+    background: url("/bgs/grapes-2032838_1920.jpg");
+}
 body .grid {
     padding-top: 5% !important;
+    padding-bottom: 5% !important;
+}
+
+body .grid {
+    background: #fff;
+    opacity: 0.85;
+    filter: alpha(opacity=85); /* For IE8 and earlier */
 }

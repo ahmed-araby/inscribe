@@ -12,3 +12,4 @@
 /composer.phar
 .idea
 src/AppBundle/Resources/public/App/node_modules
+*~

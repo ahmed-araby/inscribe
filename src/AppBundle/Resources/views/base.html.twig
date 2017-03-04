@@ -11,11 +11,11 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/css/app.css') }}">
 
     <!-- Site Properties -->
-    <title>Login Example - Semantic</title>
+    <title>Inscribe</title>
 </head>
 <body>
 
-<div class="ui grid container">
+<div class="ui one column centered grid container">
     {% for type, messages in app.session.flashBag.all %}
         {% for message in messages %}
             <div class="ui message {{ type }}">
@@ -30,6 +30,9 @@
 
 <script src="{{ asset('bundles/app/App/node_modules/jquery/dist/jquery.min.js') }}"></script>
 <script src="{{ asset('bundles/app/App/node_modules/semantic-ui/dist/semantic.min.js') }}"></script>
+<script src="{{ asset('bundles/app/App/node_modules/jquery.runner/build/jquery.runner-min.js') }}"></script>
 <script src="{{ asset('bundles/app/js/app.js') }}"></script>
+{% block footerscripts %}
+{% endblock %}
 </body>
 </html>
