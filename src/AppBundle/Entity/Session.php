@@ -190,8 +190,11 @@ class Session
 	 */
 	public function updatePeriod(  )
 	{
-		$getPassedInSeconds = $this->getPassedInSeconds($this->getEndedAt()->getTimestamp());
-		$getPassedInSeconds = max($getPassedInSeconds,0);
-		$this->setPeriod(round($getPassedInSeconds/60));
+		if ($this->getEndedAt())
+		{
+			$getPassedInSeconds = $this->getPassedInSeconds($this->getEndedAt()->getTimestamp());
+			$getPassedInSeconds = max($getPassedInSeconds,0);
+			$this->setPeriod(round($getPassedInSeconds/60));
+		}
     }
 }
