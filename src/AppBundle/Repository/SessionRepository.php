@@ -51,4 +51,14 @@ class SessionRepository extends EntityRepository
 		   ->orderBy( 's.id', 'DESC' );
 		return $qb->getQuery()->execute();
 	}
+
+	public function getLastSessionEnd(  )
+	{
+		$qb = $this->createQueryBuilder( 's' );
+		$qb->andWhere( 's.endedAt is NOT NULL' )
+		   ->andWhere( 's.endedAt > 0 ' )
+		   ->orderBy( 's.id', 'DESC' )
+			->setMaxResults(1);
+		return $qb->getQuery()->getOneOrNullResult();
+	}
 }

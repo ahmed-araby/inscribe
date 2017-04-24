@@ -82,14 +82,15 @@ class SignService
 	{
 		$user = $this->getUser();
 		$repo = $this->em->getRepository('AppBundle:Session');
-		if (date('%d') > 23)
+		if (date('d') > 23)
 		{
 			$month = date('M');
 		}else{
 			$month = date('M', strtotime('last month'));
 		}
+
 		$monthSTart = new \DateTime("23 $month");
-		$sessions =  $repo->getTodayTotalLoggedSessions($user);
+		$sessions =  $repo->getTodayTotalLoggedSessions($user, $monthSTart);
 		if (!$sessions || count($sessions) ==0)
 		{
 			return null;
@@ -137,10 +138,17 @@ class SignService
 		{
 			throw new \RuntimeException("Can not sign out while there is no active session");
 		}
-		$getPassedInSeconds = $session->getPassedInSeconds();
-		$session->setPeriod(ceil($getPassedInSeconds/60));
 		$session->setEndedAt(new \DateTime());
 		$this->em->persist($session);
 		$this->em->flush($session);
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getLastSessionEnd()
+	{
+		$repo = $this->em->getRepository('AppBundle:Session');
+		return $repo->getLastSessionEnd();
 	}
 }

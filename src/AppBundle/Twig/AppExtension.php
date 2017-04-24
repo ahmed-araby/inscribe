@@ -33,8 +33,22 @@ class AppExtension extends \Twig_Extension
 		return [
 			new \Twig_SimpleFunction('getCurrentSession', [$this, 'getCurrentSession']),
 			new \Twig_SimpleFunction('getTodayPeriod', [$this, 'getTodayPeriod']),
-			new \Twig_SimpleFunction('getMonthPeriod', [$this, 'getMonthPeriod'])
+			new \Twig_SimpleFunction('getMonthPeriod', [$this, 'getMonthPeriod']),
+			new \Twig_SimpleFunction('getLastSessionEnd', [$this, 'getLastSessionEnd'])
 		];
+	}
+
+	/**
+	 * @return \DateTime|string
+	 */
+	public function getLastSessionEnd(  )
+	{
+		$lastSession =  $this->signService->getLastSessionEnd();
+		if ($lastSession instanceof Session)
+		{
+			return $lastSession->getEndedAt()->format('Y-m-d H:i');
+		}
+		return '';
 	}
 
 	/**

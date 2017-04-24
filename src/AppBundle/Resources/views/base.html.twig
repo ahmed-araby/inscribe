@@ -24,6 +24,11 @@
         {% endfor %}
     {% endfor %}
 
+    {% if app.user %}
+    <div class="row">
+        Welcome {{ app.user.username }} , <a href="{{ path('fos_user_security_logout') }}">Logout ?</a>
+    </div>
+    {% endif %}
     {% block  content %}
     {% endblock %}
 </div>

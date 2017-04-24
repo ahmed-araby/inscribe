@@ -11,3 +11,7 @@ body .grid {
     opacity: 0.85;
     filter: alpha(opacity=85); /* For IE8 and earlier */
 }
+
+form div {
+    margin-bottom: 1.5em;
+}

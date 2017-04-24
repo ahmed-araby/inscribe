@@ -8,10 +8,13 @@
 
 namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SessionRepository")
  * @ORM\Table(name="session")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Session
 {
@@ -36,6 +39,8 @@ class Session
 	/**
 	 * @var \DateTime
 	 * @ORM\Column(type="datetime", nullable=true)
+	 * @Assert\NotBlank()
+	 * @Assert\Type("\DateTime")
 	 */
 	protected $endedAt;
 	/**
@@ -117,7 +122,7 @@ class Session
      *
      * @return Session
      */
-    public function setPeriod($period)
+    private function setPeriod($period)
     {
         $this->period = $period;
 
@@ -159,12 +164,17 @@ class Session
     }
 
 	/**
+	 * @param null $relatimeTo
+	 *
 	 * @return int
 	 */
-	public function getPassedInSeconds()
+	public function getPassedInSeconds($relatimeTo=null)
 	{
-		$now = time();
-		return $now - $this->getStartedAt()->getTimestamp();
+		if (!$relatimeTo)
+		{
+			$relatimeTo = time();
+		}
+		return $relatimeTo - $this->getStartedAt()->getTimestamp();
     }
 
 	/**
@@ -173,5 +183,15 @@ class Session
 	public function getPassedMilliseconds()
 	{
 		return $this->getPassedInSeconds()*1000;
+    }
+
+	/**
+	 * @ORM\PreFlush()
+	 */
+	public function updatePeriod(  )
+	{
+		$getPassedInSeconds = $this->getPassedInSeconds($this->getEndedAt()->getTimestamp());
+		$getPassedInSeconds = max($getPassedInSeconds,0);
+		$this->setPeriod(round($getPassedInSeconds/60));
     }
 }
