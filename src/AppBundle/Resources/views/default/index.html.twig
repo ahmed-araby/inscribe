@@ -1,11 +1,13 @@
 {% extends '@App/base.html.twig' %}
 {% set session = getCurrentSession() %}
 {% block content %}
+    {% if is_granted('ROLE_SUPER_ADMIN')  %}
     {% for activeSession in getCurrentActiveSessions() %}
-        <div class="ui message">
+        <div class="ui message row">
             {{ activeSession.getUser().username }} : {{ activeSession.getStartedAtFormatted() }}
         </div>
     {% endfor %}
+    {% endif %}
 
     <div class="row">
         Total logged in time today is : {{ getTodayPeriod() }} / 9 Hours
