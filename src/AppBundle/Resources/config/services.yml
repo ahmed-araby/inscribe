@@ -1,7 +1,10 @@
 services:
   app.service.sign_service:
       class: AppBundle\Service\SignService
-      arguments: ['@fos_user.entity_manager', '@security.token_storage']
+      arguments:
+       - '@fos_user.entity_manager'
+       - '@security.token_storage'
+       - '@security.authorization_checker'
 
   app.twig.app_extension:
       class: AppBundle\Twig\AppExtension

@@ -13,6 +13,7 @@ use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Class SignService
@@ -24,6 +25,8 @@ class SignService
 	protected $em;
 	/** @var TokenStorage */
 	protected $tokenStorage;
+	/** @var AuthorizationCheckerInterface  */
+	protected $authorizationChecker;
 
 	/**
 	 * SignService constructor.
@@ -31,10 +34,15 @@ class SignService
 	 * @param EntityManager $entityManager
 	 * @param TokenStorage $tokenStorage
 	 */
-	public function __construct( EntityManager $entityManager, TokenStorage $tokenStorage )
+	public function __construct(
+		EntityManager $entityManager,
+		TokenStorage $tokenStorage,
+		AuthorizationCheckerInterface $authorizationChecker
+	)
 	{
 		$this->em           = $entityManager;
 		$this->tokenStorage = $tokenStorage;
+		$this->authorizationChecker  = $authorizationChecker;
 	}
 
 	/**
@@ -82,14 +90,7 @@ class SignService
 	{
 		$user = $this->getUser();
 		$repo = $this->em->getRepository('AppBundle:Session');
-		if (date('d') > 23)
-		{
-			$month = date('M');
-		}else{
-			$month = date('M', strtotime('last month'));
-		}
-
-		$monthSTart = new \DateTime("23 $month");
+		$monthSTart = $this->getCurrentMonthStart();
 		$sessions =  $repo->getTodayTotalLoggedSessions($user, $monthSTart);
 		if (!$sessions || count($sessions) ==0)
 		{
@@ -156,5 +157,29 @@ class SignService
 	{
 		$repo = $this->em->getRepository('AppBundle:Session');
 		return $repo->getCurrentActiveSessions();
+	}
+
+	public function getCurrentMonthStart()
+	{
+		if (date('d') > 23)
+		{
+			$month = date('M');
+		}else{
+			$month = date('M', strtotime('last month'));
+		}
+
+		return new \DateTime("23 $month");
+	}
+
+	public function getUsersTimeSheet()
+	{
+		$monthSTart = $this->getCurrentMonthStart();
+		$user = null;
+		if (!$this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN'))
+		{
+			$user = $this->getUser();
+		}
+		$repo = $this->em->getRepository('AppBundle:Session');
+		return $repo->getUsersSessions($user, $monthSTart);
 	}
 }

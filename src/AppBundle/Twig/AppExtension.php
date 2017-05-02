@@ -35,7 +35,8 @@ class AppExtension extends \Twig_Extension
 			new \Twig_SimpleFunction('getTodayPeriod', [$this, 'getTodayPeriod']),
 			new \Twig_SimpleFunction('getMonthPeriod', [$this, 'getMonthPeriod']),
 			new \Twig_SimpleFunction('getLastSessionEnd', [$this, 'getLastSessionEnd']),
-			new \Twig_SimpleFunction('getCurrentActiveSessions', [$this, 'getCurrentActiveSessions'])
+			new \Twig_SimpleFunction('getCurrentActiveSessions', [$this, 'getCurrentActiveSessions']),
+			new \Twig_SimpleFunction('getUsersTimeSheet', [$this, 'getUsersTimeSheet'])
 		];
 	}
 
@@ -88,5 +89,10 @@ class AppExtension extends \Twig_Extension
 	public function getCurrentActiveSessions(  )
 	{
 		return $this->signService->getCurrentActiveSessions();
+	}
+
+	public function getUsersTimeSheet(  )
+	{
+		return $this->signService->getUsersTimeSheet();
 	}
 }

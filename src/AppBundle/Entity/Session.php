@@ -202,4 +202,12 @@ class Session
 	{
 		return $this->getStartedAt()->format('Y-m-d H:i');
 	}
+
+	public function getPeriodFormatted(  )
+	{
+		$minutes = $this->getPeriod();
+		$remHours = floor($minutes / 60);
+		$remMinutes = $minutes - (60*$remHours);
+		return sprintf("%s hours , %s minutes", $remHours , $remMinutes);
+	}
 }

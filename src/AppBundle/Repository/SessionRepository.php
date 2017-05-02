@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Session;
 use AppBundle\Entity\User;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -72,5 +73,28 @@ class SessionRepository extends EntityRepository
 		   ->orderBy( 's.id', 'DESC' )
 			;
 		return $qb->getQuery()->execute();
+	}
+
+	/**
+	 * @param $user
+	 *
+	 * @return Session[]
+	 */
+	public function getUsersSessions($user, $monthSTart)
+	{
+		$qb = $this->createQueryBuilder( 's')
+				->innerJoin('s.user', 'u');
+		$qb->andWhere( 's.endedAt is NOT NULL' )
+			->andWhere( 's.startedAt > :start' )->setParameter('start', $monthSTart)
+		;
+		if ($user instanceof User)
+		{
+			$qb->andWhere( 's.user = :user' )->setParameter('user', $user);
+		}
+		$qb->orderBy( 's.id', 'DESC' )
+		;
+		/** @var Session[] $results */
+		$results =  $qb->getQuery()->getResult();
+		return $results;
 	}
 }

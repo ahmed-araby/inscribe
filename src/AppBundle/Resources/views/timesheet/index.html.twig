@@ -1,0 +1,21 @@
+{% extends '@App/base.html.twig' %}
+{% block content %}
+    <table class="ui celled table">
+        <thead>
+        <tr><th>Name</th>
+            <th>Date</th>
+            <th>Logged time</th>
+        </tr></thead>
+        <tbody>
+        {% for entry in getUsersTimeSheet() %}
+        <tr>
+            <td>{{ entry.getUser().username }}</td>
+            <td>{{ entry.getStartedAt().format('Y-m-d H:i') }}</td>
+            <td>{{ entry.getPeriodFormatted() }}</td>
+        </tr>
+        {% endfor%}
+        
+        </tbody>
+    </table>
+
+{% endblock %}
