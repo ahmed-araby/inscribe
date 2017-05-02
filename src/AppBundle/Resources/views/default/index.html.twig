@@ -1,9 +1,9 @@
 {% extends '@App/base.html.twig' %}
 {% set session = getCurrentSession() %}
 {% block content %}
-    <div class="row ui message">
+    <div class="row">
     {% for activeSession in getCurrentActiveSessions() %}
-        <div class="row">
+        <div class="ui message">
             {{ activeSession.getUser().username }} : {{ activeSession.getStartedAtFormatted() }}
         </div>
     {% endfor %}
