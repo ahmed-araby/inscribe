@@ -61,4 +61,16 @@ class SessionRepository extends EntityRepository
 			->setMaxResults(1);
 		return $qb->getQuery()->getOneOrNullResult();
 	}
+
+	/**
+	 * @return Session[]
+	 */
+	public function getCurrentActiveSessions(  )
+	{
+		$qb = $this->createQueryBuilder( 's' );
+		$qb->andWhere( 's.endedAt is NULL' )
+		   ->orderBy( 's.id', 'DESC' )
+			;
+		return $qb->getQuery()->execute();
+	}
 }

@@ -151,4 +151,10 @@ class SignService
 		$repo = $this->em->getRepository('AppBundle:Session');
 		return $repo->getLastSessionEnd();
 	}
+
+	public function getCurrentActiveSessions()
+	{
+		$repo = $this->em->getRepository('AppBundle:Session');
+		return $repo->getCurrentActiveSessions();
+	}
 }

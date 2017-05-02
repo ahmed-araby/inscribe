@@ -1,34 +1,42 @@
 {% extends '@App/base.html.twig' %}
 {% set session = getCurrentSession() %}
 {% block content %}
+    <div class="row ui message">
+    {% for activeSession in getCurrentActiveSessions() %}
+        <div class="row">
+            {{ activeSession.getUser().username }} : {{ activeSession.getStartedAtFormatted() }}
+        </div>
+    {% endfor %}
+    </div>
+
     <div class="row">
         Total logged in time today is : {{ getTodayPeriod() }} / 9 Hours
     </div>
-    <div class="row">
+    <div class="row ui message">
         Total logged in time this months is : {{ getMonthPeriod() }} / 180 Hours
     </div>
-        {% if session %}
-            <div class="row">
-                Time since started &nbsp; <div id="runner"></div>
-            </div>
+    {% if session %}
+        <div class="row">
+            Time since started &nbsp; <div id="runner"></div>
+        </div>
 
-            <div class="row">
-                <a href="{{ path('app_sign_out') }}" class="ui button">
-                    <i class="stop icon"></i>
-                    Stop
-                </a>
-            </div>
-        {% else %}
-            <div class="row">
-                Last session end @ {{ getLastSessionEnd() }} &nbsp; <a href="{{ path('app_sign_editsignout') }}">Edit</a>
-            </div>
-            <div class="row">
-                <a href="{{ path('app_sign_in') }}" class="ui button two wide column">
-                    <i class="play icon"></i>
-                    Start counting
-                </a>
-            </div>
-        {% endif %}
+        <div class="row">
+            <a href="{{ path('app_sign_out') }}" class="ui button">
+                <i class="stop icon"></i>
+                Stop
+            </a>
+        </div>
+    {% else %}
+        <div class="row">
+            Last session end @ {{ getLastSessionEnd() }} &nbsp; <a href="{{ path('app_sign_editsignout') }}">Edit</a>
+        </div>
+        <div class="row">
+            <a href="{{ path('app_sign_in') }}" class="ui button two wide column">
+                <i class="play icon"></i>
+                Start counting
+            </a>
+        </div>
+    {% endif %}
 {% endblock %}
 {% block footerscripts %}
 <script>

@@ -197,4 +197,9 @@ class Session
 			$this->setPeriod(round($getPassedInSeconds/60));
 		}
     }
+
+	public function getStartedAtFormatted(  )
+	{
+		return $this->getStartedAt()->format('Y-m-d H:i');
+	}
 }
